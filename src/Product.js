@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./product.module.css";
 
 
+function capitalize(input) {
+    if (typeof input !== 'string') return ''
+    return input.charAt(0).toUpperCase() + input.slice(1)
+}
 
 
 function createArticle(article) {
-    return <div key={article.art_id}>
-        <p>{article.name}</p>
-        <p>{article.amount_of}</p>
+    return <div key={article.art_id} className={styles.article}>
+        <p className={styles.article_details}>{capitalize(article.name)}</p>
+        <p className={styles.article_details}>{article.amount_of}</p>
     </div>
 }
 
@@ -16,37 +20,37 @@ function calculateAvailability(articles, inventory) {
         let items = inventory.filter(inventoryItem => inventoryItem.art_id === article.art_id)
         let inventoryArticle = items[0];
         let availability = Math.floor(inventoryArticle.stock / article.amount_of);
+
         return availability;
     })
     return Math.min(...newItems);
 }
 
 function calculateStock(articles, inventory, newStockFn) {
-    articles.map(article => {
-        let items = inventory.filter(inventoryItem => inventoryItem.art_id === article.art_id)
-        let inventoryArticle = items[0];
-        let newStock = inventoryArticle.stock - article.amount_of;
-        newStockFn(article.art_id, newStock)
-    })
+    if (calculateAvailability(articles, inventory) > 0) {
+        articles.map(article => {
+            let items = inventory.filter(inventoryItem => inventoryItem.art_id === article.art_id)
+            let inventoryArticle = items[0];
+            let newStock = inventoryArticle.stock - article.amount_of;
+            newStockFn(article.art_id, newStock)
+        })
+
+    }
+
 
 
 }
 
 
-
-
 function Product(props) {
-    const [countProduct, setCountProduct] = useState(calculateAvailability(props.contain, props.inventory));
-    // const [countArticle, setCountArticle] = useState(props.contain.map(article => createArticle(article, props.inventory)));
-    console.log("inventory", props.inventory)
 
-    return <div className={styles.container}>
-        <p>{props.name}</p><button onClick={() => setCountProduct(countProduct - 1)} >Sell 1</button>
-        <p>Availability:
-            {calculateAvailability(props.contain, props.inventory)}</p>
-        <button onClick={() => calculateStock(props.contain, props.inventory, props.updateStock)}>Giulia is the best</button>
-        <p>{countProduct}</p>
-        <ul>Articles:
+    return <div className={styles.product_wrapper}>
+        <h3 className={styles.title}>{props.name}</h3>
+        <div className={styles.availability}><h4>Availability:
+            {calculateAvailability(props.contain, props.inventory)}</h4>
+            <button onClick={() => calculateStock(props.contain, props.inventory, props.updateStock)}>Sell 1</button>
+        </div>
+        <ul className={styles.articles_list}><p className={styles.articles_header}>Articles:</p>
             {props.contain.map(article => createArticle(article, props.inventory))}
         </ul>
     </div>

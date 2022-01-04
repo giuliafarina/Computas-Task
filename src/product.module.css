@@ -1,3 +1,92 @@
-/* .container {
+.article {
     display: flex;
-} */
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 600px) {
+
+
+    .availability {
+        flex-direction: column;
+        justify-content: space-evenly;
+
+    }
+
+    .articles_header {
+        text-align: center;
+    }
+
+
+
+}
+
+.articles_list {
+    padding: 10px;
+}
+
+.article_details {
+    color: darkslategray;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.articles_header {
+    color: darkslategray;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.title {
+    color: #222831;
+    border-bottom: solid 1px;
+    text-align: center;
+    padding-bottom: 2%;
+}
+
+
+button {
+    background-color: #db6414;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 20px;
+    list-style: none;
+    margin: 0;
+    outline: none;
+    padding: 10px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+button:hover,
+button:focus {
+    background-color: #f2873f;
+}
+
+.availability {
+    display: flex;
+    align-items: center;
+
+
+}
+
+h4 {
+    margin-right: 10px;
+}
+
+.product_wrapper {
+    width: 500px;
+}
