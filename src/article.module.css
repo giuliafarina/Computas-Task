@@ -1,0 +1,32 @@
+.article {
+    display: flex;
+    justify-content: space-between;
+}
+
+.articles_list {
+    padding: 10px;
+}
+
+.article_details {
+    color: darkslategray;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.articles_header {
+    color: darkslategray;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+@media screen and (max-width: 600px) {
+
+
+
+    .articles_header {
+        text-align: center;
+    }
+
+
+
+}

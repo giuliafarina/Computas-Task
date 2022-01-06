@@ -1,18 +1,8 @@
 import React from "react";
+import Article from "./Article";
 import styles from "./product.module.css";
 
 
-function capitalize(input) {
-    if (typeof input !== 'string') return ''
-    return input.charAt(0).toUpperCase() + input.slice(1)
-}
-
-function createArticle(article) {
-    return <li key={article.art_id} className={styles.article}>
-        <p className={styles.article_details}>{capitalize(article.name)}</p>
-        <p className={styles.article_details}>{article.amount_of}</p>
-    </li>
-}
 
 function calculateAvailability(articles, inventory) {
     const availabilityPerArticle = articles.map(article => {
@@ -47,10 +37,10 @@ function Product(props) {
                 Sell 1
             </button>
         </div>
-        <p className={styles.articles_header}>Articles:</p>
-        <ul className={styles.articles_list}>
-            {props.articles.map(article => createArticle(article, props.inventory))}
-        </ul>
+        <Article
+            articles={props.articles}
+            inventory={props.inventory}
+        />
     </div>
 }
 
