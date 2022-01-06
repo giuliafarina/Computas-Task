@@ -7,51 +7,49 @@ function capitalize(input) {
     return input.charAt(0).toUpperCase() + input.slice(1)
 }
 
-
 function createArticle(article) {
-    return <div key={article.art_id} className={styles.article}>
+    return <li key={article.art_id} className={styles.article}>
         <p className={styles.article_details}>{capitalize(article.name)}</p>
         <p className={styles.article_details}>{article.amount_of}</p>
-    </div>
+    </li>
 }
 
 function calculateAvailability(articles, inventory) {
-    let newItems = articles.map(article => {
-        let items = inventory.filter(inventoryItem => inventoryItem.art_id === article.art_id)
-        let inventoryArticle = items[0];
-        let availability = Math.floor(inventoryArticle.stock / article.amount_of);
+    const availabilityPerArticle = articles.map(article => {
+        const inventoryArticle = inventory.find(inventoryItem => inventoryItem.art_id === article.art_id)
+        const articleAvailability = Math.floor(inventoryArticle.stock / article.amount_of);
 
-        return availability;
+        return articleAvailability;
     })
-    return Math.min(...newItems);
+    // Math.min can't take a list as an argument, but it takes one or more numbers
+    return Math.min(...availabilityPerArticle);
 }
 
-function calculateStock(articles, inventory, newStockFn) {
+function calculateStock(articles, inventory, updateStockCallback) {
     if (calculateAvailability(articles, inventory) > 0) {
         articles.map(article => {
-            let items = inventory.filter(inventoryItem => inventoryItem.art_id === article.art_id)
-            let inventoryArticle = items[0];
-            let newStock = inventoryArticle.stock - article.amount_of;
-            newStockFn(article.art_id, newStock)
+            const inventoryArticle = inventory.find(inventoryItem => inventoryItem.art_id === article.art_id)
+            const newStock = inventoryArticle.stock - article.amount_of;
+            updateStockCallback(article.art_id, newStock)
         })
-
     }
-
-
-
 }
 
 
 function Product(props) {
-
     return <div className={styles.product_wrapper}>
         <h3 className={styles.title}>{props.name}</h3>
-        <div className={styles.availability}><h4>Availability:
-            {calculateAvailability(props.contain, props.inventory)}</h4>
-            <button onClick={() => calculateStock(props.contain, props.inventory, props.updateStock)}>Sell 1</button>
+        <div className={styles.availability}>
+            <h4>Availability:
+                {calculateAvailability(props.articles, props.inventory)}
+            </h4>
+            <button onClick={() => calculateStock(props.articles, props.inventory, props.updateStockCallback)}>
+                Sell 1
+            </button>
         </div>
-        <ul className={styles.articles_list}><p className={styles.articles_header}>Articles:</p>
-            {props.contain.map(article => createArticle(article, props.inventory))}
+        <p className={styles.articles_header}>Articles:</p>
+        <ul className={styles.articles_list}>
+            {props.articles.map(article => createArticle(article, props.inventory))}
         </ul>
     </div>
 }

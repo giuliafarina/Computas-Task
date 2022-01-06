@@ -8,24 +8,24 @@ import styles from "./product-container.module.css";
 function ProductContainer() {
 
 
-
     products.forEach(product => {
         product.contain_articles.forEach(article => {
             //mapping through the inventory list to find matching ids
-            let matchingArticles = inventory.filter(inventoryItem => inventoryItem.art_id === article.art_id)
+            const matchingArticle = inventory.find(inventoryItem => inventoryItem.art_id === article.art_id)
             //assigning property "name" to article
-            article.name = matchingArticles[0].name
+            article.name = matchingArticle.name
         })
 
     })
 
 
-    const [num, setNum] = useState(inventory);
-    const setArticleStock = (art_id, newStock) => {
-        const newInventory = [...num];
+    const [updatedInventory, setInventory] = useState(inventory);
+
+    const updateStockCallback = (art_id, newStock) => {
+        const newInventory = [...updatedInventory];
         const item = newInventory.find((item) => item.art_id === art_id);
         item.stock = newStock;
-        setNum(newInventory);
+        setInventory(newInventory);
     }
 
 
@@ -34,9 +34,9 @@ function ProductContainer() {
         <div className={styles.container}>
             {products.map(product => <Product key={product.id}
                 name={product.name}
-                contain={product.contain_articles}
-                inventory={num}
-                updateStock={setArticleStock}
+                articles={product.contain_articles}
+                inventory={updatedInventory}
+                updateStockCallback={updateStockCallback}
             />)}
         </div>
     </>
